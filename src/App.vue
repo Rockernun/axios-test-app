@@ -1,47 +1,41 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
+import axios from "axios";
+const getData = () => {
+  axios
+    .get("/api/data")
+    .then((response) => {
+      console.log(response.data);
+    })
+    .catch((error) => {
+      console.error(`데이터를 가져오던 중 에러 발생: `, error);
+    });
+};
+
+const postData = async () => {
+  try {
+    const response = await axios.post("/api/data", {
+      name: "국민이",
+      description: "테스트 데이터",
+    });
+    console.log("등록성공", response.data);
+    alert("등록이 완료되엇습니다.");
+  } catch (error) {
+    console.error("등록 실패", error);
+    alert("등록 중 문제가 발생했습니다.");
+  }
+};
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-    </div>
-  </header>
-
-  <main>
-    <TheWelcome />
-  </main>
+  <div>
+    <button type="button" @click="postData">POST</button>
+    <br />
+    <button type="button" @click="getData">GET</button>
+    <br />
+    <button type="button">PUT</button>
+    <br />
+    <button type="button">PATCH</button>
+  </div>
 </template>
 
-<style scoped>
-header {
-  line-height: 1.5;
-}
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-}
-</style>
+<style scoped></style>
